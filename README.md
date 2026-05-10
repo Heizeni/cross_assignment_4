@@ -47,3 +47,8 @@ StackNavigator
 <img width="1179" height="2556" alt="photo_2026-05-10_12-03-09" src="https://github.com/user-attachments/assets/ae8d4fa0-157e-4aba-9638-afe5a2fe1cd9" />
 <img width="1179" height="2556" alt="photo_2026-05-10_12-03-07" src="https://github.com/user-attachments/assets/f709797f-0c53-4dfa-9a02-dd68527a22b8" />
 <img width="1179" height="2556" alt="photo_2026-05-10_12-02-48" src="https://github.com/user-attachments/assets/53c1de51-403a-470b-be5c-94a16101ff3c" />
+
+---
+
+<img width="1179" height="2556" alt="image" src="https://github.com/user-attachments/assets/dcbe7165-c6c2-400e-9eb9-b75d4de3541a" />
+
