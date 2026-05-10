@@ -1,50 +1,49 @@
-# Welcome to your Expo app 👋
+# Gaming Hub Navigation App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Мобільний застосунок, створений у межах домашнього завдання з реалізації навігації в React Native / Expo.
 
-## Get started
+Проєкт демонструє використання двох типів навігації:
 
-1. Install dependencies
+- Tab Navigation для переходу між основними екранами застосунку.
+- Stack Navigation для відкриття додаткового екрана налаштувань.
 
-   ```bash
-   npm install
-   ```
+## Опис проєкту
 
-2. Start the app
+Gaming Hub — це прототип мобільного застосунку для геймерської спільноти. У застосунку користувач може переглядати ігри, популярні білди, профіль користувача та сторінку налаштувань.
 
-   ```bash
-   npx expo start
-   ```
+У межах мінімальної реалізації створено три екрани:
 
-In the output, you'll find options to open the app in a
+- ExploreScreen — екран пошуку ігор, гайдів і білдів.
+- ProfileScreen — екран профілю користувача.
+- SettingsScreen — екран налаштувань користувача.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Реалізована навігація
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### Tab Navigation
 
-## Get a fresh project
+Tab Navigation використовується для основних розділів застосунку:
 
-When you're ready, run:
+- Explore
+- Profile
 
-```bash
-npm run reset-project
-```
+Цей тип навігації обрано тому, що в мобільному дизайні основні екрани розміщені в нижній навігаційній панелі.
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### Stack Navigation
 
-## Learn more
+Stack Navigation використовується для переходу з екрана Profile до екрана Settings.
 
-To learn more about developing your project with Expo, look at the following resources:
+Екран Settings не є основним розділом нижньої навігації, тому він відкривається як додатковий екран поверх основної Tab Navigation.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+Схема навігації:
 
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```text
+StackNavigator
+  ├── MainTabs
+  │   └── TabNavigator
+  │       ├── ExploreScreen
+  │       └── ProfileScreen
+  └── SettingsScreen
+  
+<img width="1179" height="2556" alt="photo_2026-05-10_12-03-09" src="https://github.com/user-attachments/assets/ae8d4fa0-157e-4aba-9638-afe5a2fe1cd9" />
+<img width="1179" height="2556" alt="photo_2026-05-10_12-03-07" src="https://github.com/user-attachments/assets/f709797f-0c53-4dfa-9a02-dd68527a22b8" />
+<img width="1179" height="2556" alt="photo_2026-05-10_12-02-48" src="https://github.com/user-attachments/assets/53c1de51-403a-470b-be5c-94a16101ff3c" />
