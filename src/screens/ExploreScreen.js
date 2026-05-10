@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import {
   ScrollView,
   View,
@@ -5,8 +6,11 @@ import {
   StyleSheet,
   Image,
   Pressable,
+  ActivityIndicator,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+
+import { fetchBuilds } from '../api/buildsApi';
 
 const games = [
   {
@@ -53,46 +57,35 @@ const games = [
   },
 ];
 
-const builds = [
-  {
-    id: 1,
-    title: 'Moonveil Katana',
-    subtitle: 'Elden Ring · DragonSlyr',
-    likes: '2,340',
-    views: '12,400',
-    image:
-      'https://images.unsplash.com/photo-1529699211952-734e80c4d42b?q=80&w=400&auto=format&fit=crop',
-  },
-  {
-    id: 2,
-    title: 'Whirlwind Barb',
-    subtitle: 'Diablo IV · CritMaster',
-    likes: '1,890',
-    views: '9,800',
-    image:
-      'https://images.unsplash.com/photo-1614294149010-950b698f72c0?q=80&w=400&auto=format&fit=crop',
-  },
-  {
-    id: 3,
-    title: 'Saryn Nuke',
-    subtitle: 'Warframe · TennoX',
-    likes: '1,560',
-    views: '7,600',
-    image:
-      'https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?q=80&w=400&auto=format&fit=crop',
-  },
-  {
-    id: 4,
-    title: 'Arc Witch',
-    subtitle: 'Path of Exile · ExileGuru',
-    likes: '3,100',
-    views: '18,200',
-    image:
-      'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=400&auto=format&fit=crop',
-  },
-];
+export default function ExploreScreen({ navigation }) {
+  const [builds, setBuilds] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState('');
 
-export default function ExploreScreen() {
+  useEffect(() => {
+    const loadBuilds = async () => {
+      try {
+        // Отримуємо список білдів з MockAPI через окремий файл api/buildsApi.js.
+        const data = await fetchBuilds();
+
+        // Зберігаємо отримані дані у стані компонента.
+        setBuilds(data);
+      } catch (error) {
+        console.log('Builds loading error:', error);
+        setErrorMessage('Unable to load builds. Please try again later.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadBuilds();
+  }, []);
+
+  const handleBuildPress = build => {
+    // Передаємо весь об'єкт build на екран деталей.
+    navigation.navigate('BuildDetails', { build });
+  };
+
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <Text style={styles.title}>Explore</Text>
@@ -135,9 +128,11 @@ export default function ExploreScreen() {
             ]}
           >
             <Image source={{ uri: game.image }} style={styles.gameImage} />
+
             <Text style={styles.gameTitle} numberOfLines={1}>
               {game.title}
             </Text>
+
             <Text style={styles.gameGenre}>{game.genre}</Text>
           </Pressable>
         ))}
@@ -151,26 +146,45 @@ export default function ExploreScreen() {
         </Pressable>
       </View>
 
-      {builds.map(build => (
-        <Pressable
-          key={build.id}
-          onPress={() => {}}
-          style={({ pressed }) => [
-            styles.buildCard,
-            pressed && styles.pressedCard,
-          ]}
-        >
-          <Image source={{ uri: build.image }} style={styles.buildImage} />
+      {isLoading && (
+        <View style={styles.statusBox}>
+          <ActivityIndicator size="large" color="#FF5FA2" />
+          <Text style={styles.statusText}>Loading builds...</Text>
+        </View>
+      )}
 
-          <View style={styles.buildContent}>
-            <Text style={styles.buildTitle}>{build.title}</Text>
-            <Text style={styles.buildSubtitle}>{build.subtitle}</Text>
-            <Text style={styles.buildStats}>
-              ♡ {build.likes}   ◉ {build.views}
-            </Text>
-          </View>
-        </Pressable>
-      ))}
+      {errorMessage ? (
+        <View style={styles.statusBox}>
+          <Text style={styles.errorText}>{errorMessage}</Text>
+        </View>
+      ) : null}
+
+      {!isLoading &&
+        !errorMessage &&
+        builds.map((build, index) => (
+          <Pressable
+            key={build.id ? build.id.toString() : `build-${index}`}
+            onPress={() => handleBuildPress(build)}
+            style={({ pressed }) => [
+              styles.buildCard,
+              pressed && styles.pressedCard,
+            ]}
+          >
+            <Image source={{ uri: build.image }} style={styles.buildImage} />
+
+            <View style={styles.buildContent}>
+              <Text style={styles.buildTitle}>{build.title}</Text>
+
+              <Text style={styles.buildSubtitle}>
+                {build.game} · {build.author}
+              </Text>
+
+              <Text style={styles.buildStats}>
+                ♡ {build.likes}   ◉ {build.views}
+              </Text>
+            </View>
+          </Pressable>
+        ))}
     </ScrollView>
   );
 }
@@ -317,5 +331,24 @@ const styles = StyleSheet.create({
   buildStats: {
     color: '#7B819E',
     fontSize: 14,
+  },
+  statusBox: {
+    borderWidth: 1,
+    borderColor: '#171A2E',
+    backgroundColor: '#090B1D',
+    borderRadius: 18,
+    padding: 20,
+    alignItems: 'center',
+    marginBottom: 14,
+  },
+  statusText: {
+    color: '#7B819E',
+    fontSize: 15,
+    marginTop: 10,
+  },
+  errorText: {
+    color: '#F4F4FF',
+    fontSize: 15,
+    textAlign: 'center',
   },
 });
